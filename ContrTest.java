@@ -1,15 +1,16 @@
 package org.example;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/*The Controller class uses variables from the Model class in order to perform CRUD operations for the Medical Database Management System
+it takes input to from the console and prints the outputs there as well.
+*/
 class ContrTest{
     ModelTest M1 = new ModelTest();
-    String str;
-    static float full;
+
+    static float BMI;
 
     //Function to print entire main list
     public void printPeople() {
@@ -23,93 +24,70 @@ class ContrTest{
 
     public void addManual(){
         String patch;
-        M1.n = 0;
+        M1.real = 0;
         //Makes sure person is empty
         M1.Person.clear();
-        //takes user input and puts into person
-        System.out.println("Enter the person's name");
-        //Added to test user input
-        str = "AAAA";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObj1 = new Scanner(System.in);
-        M1.Person.add(myObj1.nextLine());
-        System.out.println("Enter the person's blood type");
-        str = "A+";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObj2 = new Scanner(System.in);
-        M1.two = myObj2.nextLine();
+        //Puts data taken from static variable into Person
+        M1.Person.add(M1.Tnam);
+        //Puts data taken from static variable into variable for checking
+        M1.typC = M1.Ttyp;
         //Checks if real blood type
-        if(M1.two.equals("A+") || M1.two.equals("A-") || M1.two.equals("B+") || M1.two.equals("B-") || M1.two.equals("AB+") || M1.two.equals("AB-") || M1.two.equals("O+") || M1.two.equals("O-")){
-            M1.Person.add(M1.two);
+        if(M1.typC.equals("A+") || M1.typC.equals("A-") || M1.typC.equals("B+") || M1.typC.equals("B-") || M1.typC.equals("AB+") || M1.typC.equals("AB-") || M1.typC.equals("O+") || M1.typC.equals("O-")){
+            //If true the value is added to Person
+            M1.Person.add(M1.typC);
         }
         else{
+            System.out.println("That is not a valid blood type");
             return;
         }
-        System.out.println("Enter the person's age");
-        str = "42";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObj3 = new Scanner(System.in);
-        M1.three = myObj3.nextInt();
+        //Puts data taken from static variable into variable for checking
+        M1.ageC = M1.Tage;
         //Makes sure value is at least 0
-        if(M1.three >= 0){
-            M1.Person.add(M1.three);
+        if(M1.ageC >= 0){
+            M1.Person.add(M1.ageC);
         }
         else{
             return;
         }
-        System.out.println("Enter the person's blood pressure");
-        str = "42.0";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObj4 = new Scanner(System.in);
-        M1.four = myObj4.nextFloat();
-        if(M1.four >= 0){
-            M1.Person.add(M1.four);
+        //Puts data taken from static variable into variable for checking
+        M1.prCh = M1.Tpre;
+        if(M1.prCh >= 0){
+            M1.Person.add(M1.prCh);
         }
         else{
             return;
         }
-        System.out.println("Enter the person's height");
-        str = "42.0";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObj5 = new Scanner(System.in);
-        M1.five = myObj5.nextFloat();
-        if(M1.five >= 0) {
-            M1.Person.add(M1.five);
+        //Puts data taken from static variable into variable for checking
+        M1.heiC = M1.Thei;
+        if(M1.heiC >= 0) {
+            M1.Person.add(M1.heiC);
         }
         else{
             return;
         }
-        System.out.println("Enter the person's weight");
-        str = "42.0";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObj6 = new Scanner(System.in);
-        M1.six = myObj6.nextFloat();
-        if(M1.six >= 0){
-            M1.Person.add(M1.six);
+        //Puts data taken from static variable into variable for checking
+        M1.weiC = M1.Twei;
+        if(M1.weiC >= 0){
+            M1.Person.add(M1.weiC);
         }
         else{
             return;
         }
-        //catches an overflow
-        str = " ";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObjfin = new Scanner(System.in);
-        patch = myObjfin.nextLine();
         //Compares the name and blood type of the new person with all the people inside the list
         for(int i = 0; i < M1.People.size(); i++){
             //Temporarily takes item from main list
             M1.Hold = (List<Object>) M1.People.get(i);
             System.out.println(M1.Hold + "\n" + M1.Person);
             if((M1.Hold.get(0).toString().equals(M1.Person.get(0).toString())) && (M1.Hold.get(1).toString().equals(M1.Person.get(1).toString()))){
-                //If the name and blood type matches n is set to 1
-                M1.n = 1;
+                //If the name and blood type matches real is set to 1
+                M1.real = 1;
                 //Alerts user of any people that did not get added to list
                 System.out.println(M1.Person.get(0) + " did not get added to people because that person already exists.");
             }
         }
 
-        //If n hasn't been set to 1 because the name and blood type matches a copy of the person will be added to the list
-        if(M1.n == 0){
+        //If real hasn't been set to 1 because the name and blood type matches a copy of the person will be added to the list
+        if(M1.real == 0){
             M1.People.add(M1.Person.clone());
         }
         //Empties person when done
@@ -121,13 +99,8 @@ class ContrTest{
     //Adds people to list from file
     public void addFile(){
         try{
-            //User prompt
-            System.out.println("Enter the name of the file you are entering");
             //Initializes FileReader to take file
-            str = "Patients.txt";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjF = new Scanner(System.in);
-            FileReader fileReader = new FileReader(myObjF.nextLine());
+            FileReader fileReader = new FileReader(M1.Tfile);
             //Initializes scanner to take from file
             Scanner scanner = new Scanner(fileReader);
             //Separates items by breaking them at the commas
@@ -136,53 +109,53 @@ class ContrTest{
             M1.Person.clear();
 
             while (scanner.hasNextLine()) {
-                M1.n = 0;
+                M1.real = 0;
                 //Takes data from file and adds it to Person
                 Object data = scanner.next();
                 M1.Person.add(data);
                 data = scanner.next();
-                M1.two = String.valueOf(data);
-                if(M1.two.equals("A+") || M1.two.equals("A-") || M1.two.equals("B+") || M1.two.equals("B-") || M1.two.equals("AB+") || M1.two.equals("AB-") || M1.two.equals("O+") || M1.two.equals("O-")){
-                    M1.Person.add(M1.two);
+                M1.typC = String.valueOf(data);
+                if(M1.typC.equals("A+") || M1.typC.equals("A-") || M1.typC.equals("B+") || M1.typC.equals("B-") || M1.typC.equals("AB+") || M1.typC.equals("AB-") || M1.typC.equals("O+") || M1.typC.equals("O-")){
+                    M1.Person.add(M1.typC);
                 }
                 else{
-                    M1.n = 1;
+                    M1.real = 1;
                 }
                 data = scanner.next();
-                M1.three = Integer.parseInt(String.valueOf(data));
-                if(M1.three >= 0){
-                    M1.Person.add(M1.three);
+                M1.ageC = Integer.parseInt(String.valueOf(data));
+                if(M1.ageC >= 0){
+                    M1.Person.add(M1.ageC);
                 }
                 else{
-                    M1.n = 1;
+                    M1.real = 1;
                 }
                 data = scanner.next();
-                M1.four = Float.parseFloat(String.valueOf(data));
-                if(M1.four >= 0){
-                    M1.Person.add(M1.four);
+                M1.prCh = Float.parseFloat(String.valueOf(data));
+                if(M1.prCh >= 0){
+                    M1.Person.add(M1.prCh);
                 }
                 else{
-                    M1.n = 1;
+                    M1.real = 1;
                 }
                 data = scanner.next();
-                M1.five = Float.parseFloat(String.valueOf(data));
-                if(M1.five >= 0){
-                    M1.Person.add(M1.five);
+                M1.heiC = Float.parseFloat(String.valueOf(data));
+                if(M1.heiC >= 0){
+                    M1.Person.add(M1.heiC);
                 }
                 else{
-                    M1.n = 1;
+                    M1.real = 1;
                 }
                 //Takes data from file that doesn't end in a comma
                 data = scanner.nextLine();
                 String cut = data.toString();
                 //Cuts off extra from data before entering it into person
                 data = cut.replace(", ", "");
-                M1.six = Float.parseFloat(String.valueOf(data));
-                if(M1.six >= 0){
-                    M1.Person.add(M1.six);
+                M1.weiC = Float.parseFloat(String.valueOf(data));
+                if(M1.weiC >= 0){
+                    M1.Person.add(M1.weiC);
                 }
                 else{
-                    M1.n = 1;
+                    M1.real = 1;
                 }
 
                 //Compares the name and blood type of the new person with all the people inside the list
@@ -190,15 +163,15 @@ class ContrTest{
                     //Temporarily takes item from main list
                     M1.Hold = (List<Object>) M1.People.get(i);
                     if((M1.Hold.get(0).toString().equals(M1.Person.get(0).toString())) && (M1.Hold.get(1).toString().equals(M1.Person.get(1).toString()))){
-                        //If the name and blood type matches n is set to 1
-                        M1.n = 1;
+                        //If the name and blood type matches real is set to 1
+                        M1.real = 1;
                         //Alerts user of any people that did not get added to list
                         System.out.println(M1.Person.get(0) + " did not get added to people because the data was invalid.");
                     }
                 }
 
-                //If n hasn't been set to 1 because the ID matches a copy of the person will be added to the list
-                if(M1.n == 0){
+                //If real hasn't been set to 1 because the ID matches a copy of the person will be added to the list
+                if(M1.real == 0){
                     M1.People.add(M1.Person.clone());
                 }
                 else{
@@ -217,18 +190,12 @@ class ContrTest{
     }
 
     public void removePerson(){
-        //User prompt
-        System.out.println("Enter name and blood type of person to remove");
-        //Takes user input
-        str = "Jerry Jersey";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObju = new Scanner(System.in);
-        M1.r = myObju.nextLine();
-        str = "O+";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObjp = new Scanner(System.in);
-        M1.s = myObjp.nextLine();
-        if(!M1.s.equals("A+") && !M1.s.equals("A-") && !M1.s.equals("B+") && !M1.s.equals("B-") && !M1.s.equals("AB+") && !M1.s.equals("AB-") && !M1.s.equals("O+") && !M1.s.equals("O-")){
+        //Puts data taken from static variable into variable
+        M1.namL = M1.Tnam;
+        //Puts data taken from static variable into variable for checking
+        M1.typL = M1.Ttyp;
+        if(!M1.typL.equals("A+") && !M1.typL.equals("A-") && !M1.typL.equals("B+") && !M1.typL.equals("B-") && !M1.typL.equals("AB+") && !M1.typL.equals("AB-") && !M1.typL.equals("O+") && !M1.typL.equals("O-")){
+            System.out.println("That is not a valid blood type");
             return;
         }
         //Goes through list checking name and blood type
@@ -236,15 +203,16 @@ class ContrTest{
             //Temporarily takes item from main list
             M1.Hold = (List<Object>) M1.People.get(i);
             //If the name and blood type entered are the same as any person in the list, the person is removed
-            if((M1.Hold.get(0).toString().equals(M1.r)) && (M1.Hold.get(1).toString().equals(M1.s))){
+            if((M1.Hold.get(0).toString().equals(M1.namL)) && (M1.Hold.get(1).toString().equals(M1.typL))){
+                M1.NaDe = (String) M1.Hold.get(0);
                 M1.People.remove(i);
                 //Used to check if a person matched
-                M1.g = 1;
+                M1.check = 1;
             }
         }
         //Alerts user what book was removed
-        if(M1.g == 1){
-            System.out.println(M1.Hold.get(0) + " removed.");
+        if(M1.check == 1){
+            System.out.println(M1.NaDe + " removed.");
             //Prints updated list
             printPeople();
         }
@@ -252,27 +220,15 @@ class ContrTest{
         else{
             System.out.println("This person does not exist");
         }
-        if(M1.g != 1) {
-            //Notifies the user there was no person and terminates
-            System.out.println("That person does not exist.");
-            return;
-        }
     }
 
     public void editPerson(){
-        M1.gfs = 0;
-        //User prompt
-        System.out.println("Enter name and blood type of person to edit");
-        //Takes user input
-        str = "Jerry Jersey";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObju = new Scanner(System.in);
-        M1.r = myObju.nextLine();
-        str = "O+";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObjp = new Scanner(System.in);
-        M1.s = myObjp.nextLine();
-        if(!M1.s.equals("A+") && !M1.s.equals("A-") && !M1.s.equals("B+") && !M1.s.equals("B-") && !M1.s.equals("AB+") && !M1.s.equals("AB-") && !M1.s.equals("O+") && !M1.s.equals("O-")){
+        //Puts data taken from static variable into variable
+        M1.namL = M1.TTnam;
+        //Puts data taken from static variable into variable for checking
+        M1.typL = M1.TTtyp;
+        if(!M1.typL.equals("A+") && !M1.typL.equals("A-") && !M1.typL.equals("B+") && !M1.typL.equals("B-") && !M1.typL.equals("AB+") && !M1.typL.equals("AB-") && !M1.typL.equals("O+") && !M1.typL.equals("O-")){
+            System.out.println("That is not a valid blood type");
             return;
         }
         M1.Person.clear();
@@ -280,85 +236,62 @@ class ContrTest{
         for(int i = 0; i < M1.People.size(); i++){
             //Temporarily takes item from main list
             M1.Hold = (List<Object>) M1.People.get(i);
-            //If the name and blood type entered are the same as any person in the list, the person's location is put in l
-            if((M1.Hold.get(0).toString().equals(M1.r)) && (M1.Hold.get(1).toString().equals(M1.s))){
-                M1.l = i;
+            //If the name and blood type entered are the same as any person in the list, the person's location is put in loc
+            if((M1.Hold.get(0).toString().equals(M1.namL)) && (M1.Hold.get(1).toString().equals(M1.typL))){
+                M1.loc = i;
                 //stores correct person
                 for(int j = 0; j < M1.Hold.size(); j++){
                     M1.Person.add(M1.Hold.get(j));
                 }
                 //Used to check if a person matched
-                M1.g = 1;
+                M1.check = 1;
             }
         }
         //Alerts user what book was removed
-        if(M1.g == 1){
+        if(M1.check == 1){
             //takes new variables to replace person
-            System.out.println("Enter the person's name");
-            str = "Jarry Jersy";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjI = new Scanner(System.in);
-            M1.one = myObjI.nextLine();
+            M1.namC = M1.Tnams;
             //if user leaves field empty the variable isn't changed
-            if(!M1.one.isEmpty()){
-                M1.Person.set(0, M1.one);
+            if(!M1.namC.isEmpty()){
+                M1.Person.set(0, M1.namC);
             }
-            System.out.println("Enter the person's blood type");
-            str = "AB-";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjII = new Scanner(System.in);
-            M1.two = myObjII.nextLine();
-            if(!M1.two.isEmpty()){
-                if(M1.two.equals("A+") || M1.two.equals("A-") || M1.two.equals("B+") || M1.two.equals("B-") || M1.two.equals("AB+") || M1.two.equals("AB-") || M1.two.equals("0+") || M1.two.equals("0-")){
-                    M1.Person.set(1, M1.two);
+            M1.typC = M1.Ttyps;
+            if(!M1.typC.isEmpty()){
+                if(M1.typC.equals("A+") || M1.typC.equals("A-") || M1.typC.equals("B+") || M1.typC.equals("B-") || M1.typC.equals("AB+") || M1.typC.equals("AB-") || M1.typC.equals("O+") || M1.typC.equals("O-")){
+                    M1.Person.set(1, M1.typC);
                 }
                 else{
+                    System.out.println("That is not a valid blood type");
                     return;
                 }
             }
-            System.out.println("Enter the person's age");
-            str = "23";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjIII = new Scanner(System.in);
-            M1.et = myObjIII.nextLine();
-            if(!M1.et.isEmpty()){
-                if(Integer.parseInt(String.valueOf(M1.et)) >= 0){
-                    M1.Person.set(2, M1.et);
+            M1.ageE = M1.Tages;
+            if(!M1.ageE.isEmpty()){
+                if(Integer.parseInt(String.valueOf(M1.ageE)) >= 0){
+                    M1.Person.set(2, M1.ageE);
                 }
             }
-            System.out.println("Enter the person's blood pressure");
-            str = "45.0";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjIV = new Scanner(System.in);
-            M1.eo = myObjIV.nextLine();
-            if(!M1.eo.isEmpty()){
-                if(Float.parseFloat(String.valueOf(M1.eo)) >= 0){
-                    M1.Person.set(3, M1.eo);
+            M1.prEd = M1.Tpres;
+            if(!M1.prEd.isEmpty()){
+                if(Float.parseFloat(String.valueOf(M1.prEd)) >= 0){
+                    M1.Person.set(3, M1.prEd);
                 }
             }
-            System.out.println("Enter the person's height");
-            str = "78.0";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjV = new Scanner(System.in);
-            M1.ei = myObjV.nextLine();
-            if(!M1.ei.isEmpty()){
-                if(Float.parseFloat(String.valueOf(M1.ei)) >= 0){
-                    M1.Person.set(4, M1.ei);
+            M1.heiE = M1.Theis;
+            if(!M1.heiE.isEmpty()){
+                if(Float.parseFloat(String.valueOf(M1.heiE)) >= 0){
+                    M1.Person.set(4, M1.heiE);
                 }
             }
-            System.out.println("Enter the person's weight");
-            str = "223.0";
-            System.setIn(new ByteArrayInputStream(str.getBytes()));
-            Scanner myObjVI = new Scanner(System.in);
-            M1.es = myObjVI.nextLine();
-            if(!M1.es.isEmpty()){
-                if(Float.parseFloat(String.valueOf(M1.es)) >= 0){
-                    M1.Person.set(5, M1.es);
+            M1.weiE = M1.Tweis;
+            if(!M1.weiE.isEmpty()){
+                if(Float.parseFloat(String.valueOf(M1.weiE)) >= 0){
+                    M1.Person.set(5, M1.weiE);
                 }
             }
 
             //replaces the person with the updated version
-            M1.People.remove(M1.l);
+            M1.People.remove(M1.loc);
             M1.People.add(M1.Person.clone());
             //Prints updated list
             printPeople();
@@ -367,47 +300,35 @@ class ContrTest{
         else{
             System.out.println("This person does not exist");
         }
-        if(M1.g != 1) {
-            //Notifies the user there was no person and terminates
-            System.out.println("That person does not exist.");
-            return;
-        }
-        M1.gfs = 1;
     }
 
     public void getBMI(){
-        //User prompt
-        System.out.println("Enter name and blood type of person to edit");
-        //Takes user input
-        str = "Jerry Jersey";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObju = new Scanner(System.in);
-        M1.r = myObju.nextLine();
-        str = "O+";
-        System.setIn(new ByteArrayInputStream(str.getBytes()));
-        Scanner myObjp = new Scanner(System.in);
-        M1.s = myObjp.nextLine();
-        if(!M1.s.equals("A+") && !M1.s.equals("A-") && !M1.s.equals("B+") && !M1.s.equals("B-") && !M1.s.equals("AB+") && !M1.s.equals("AB-") && !M1.s.equals("O+") && !M1.s.equals("O-")){
+        //Puts data taken from static variable into variable for
+        M1.namL = M1.Tnam;
+        //Puts data taken from static variable into variable for checking
+        M1.typL = M1.Ttyp;
+        if(!M1.typL.equals("A+") && !M1.typL.equals("A-") && !M1.typL.equals("B+") && !M1.typL.equals("B-") && !M1.typL.equals("AB+") && !M1.typL.equals("AB-") && !M1.typL.equals("O+") && !M1.typL.equals("O-")){
+            System.out.println("That is not a valid blood type");
             return;
         }
         //Goes through list checking name and blood type
         for(int i = 0; i < M1.People.size(); i++){
             //Temporarily takes item from main list
             M1.Hold = (List<Object>) M1.People.get(i);
-            //If the name and blood type entered are the same as any person in the list, the person's location is put in l
-            if((M1.Hold.get(0).toString().equals(M1.r)) && (M1.Hold.get(1).toString().equals(M1.s))){
-                M1.l = i;
+            //If the name and blood type entered are the same as any person in the list, the person's location is put in loc
+            if((M1.Hold.get(0).toString().equals(M1.namL)) && (M1.Hold.get(1).toString().equals(M1.typL))){
+                M1.loc = i;
                 for(int j = 0; j <M1.Hold.size(); j++){
                     M1.Person.add(M1.Hold.get(j));
                 }
                 //Used to check if a book matched
-                M1.g = 1;
+                M1.check = 1;
             }
         }
-        if(M1.g == 1){
+        if(M1.check == 1){
+            BMI = Float.parseFloat((M1.Person.get(5)).toString()) / (Float.parseFloat((M1.Person.get(4)).toString()) * Float.parseFloat((M1.Person.get(4)).toString())) * 703;
             //Calculates and prints BMI
-            full = Float.parseFloat((M1.Person.get(5)).toString()) / (Float.parseFloat((M1.Person.get(4)).toString()) * Float.parseFloat((M1.Person.get(4)).toString())) * 703;
-            System.out.println("The BMI of " + M1.Person.get(0) + " is " + full);
+            System.out.println("The BMI of " + M1.Person.get(0) + " is " + Float.parseFloat((M1.Person.get(5)).toString()) / (Float.parseFloat((M1.Person.get(4)).toString()) * Float.parseFloat((M1.Person.get(4)).toString())) * 703);
         }
         else{
             System.out.println("This person does not exist");
